@@ -1,5 +1,5 @@
 
-# Build a Game-playing Agent
+# Isolation game-playing Agent
 
 ## Synopsis
 
@@ -24,9 +24,9 @@ These rules are implemented for you in the `isolation.Board` class provided in t
 
 ### Evaluation Functions
 
-Six different evaluated functions are implemented and tested agains each other. Detailed report and desciption of them can be found in [here](heuristic_analysis.pdf)
+Six different evaluated functions are implemented and tested against each other. Detailed report and description of them can be found in [here](heuristic_analysis.pdf)
 
-Script called `tournament.py` is used to evaluate and compare heuristic functions by testing agent & heuristic against agent configuations that are specified in the tournament script.  The script plays agent against each one of the test agents - which have all been ranked with a calibrated Elo score (a skill rating system used in many games) - to determine the relative strength of your heuristic and search algorithm.
+The script called `tournament.py` is used to evaluate and compare heuristic functions by testing agent & heuristic against agent configurations that are specified in the tournament script.  The script plays agent against each one of the test agents - which have all been ranked with a calibrated Elo score (a skill rating system used in many games) - to determine the relative strength of your heuristic and search algorithm.
 
 
 ## Testing
@@ -41,7 +41,7 @@ Script called `tournament.py` is used to evaluate and compare heuristic function
 
 ### Unit Tests
 
-The `agent_test.py` script contains unittest test cases to evaluate your implementations.  The test cases evaluate your functions compared to a static set of example game trees to verify that the correct output is returned, and that each algorithm visits an expected number of nodes during search.
+The `agent_test.py` script contains unit test cases to evaluate your implementations.  The test cases evaluate your functions compared to a static set of example game trees to verify that the correct output is returned and that each algorithm visits an expected number of nodes during the search.
 
 ### Tournament
 
