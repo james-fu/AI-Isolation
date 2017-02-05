@@ -33,10 +33,301 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
+    return float(heuristic_3(game, player))
 
-    # TODO: finish this function!
-    raise NotImplementedError
+def heuristic_1(game,player):
+    """Aggressive play along the whole game. Active player will try to choose the most aggressive move.
+    Heuristic calculates number of players move vs against 3.5 of value of an opponent’s moves.
 
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    ----------
+    float
+    The heuristic value of the current game state to the specified player.
+    """
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves - 3.5 * opp_moves)
+
+def heuristic_2(game,player):
+    """Aggressive play after the half of the game. Active player will try to choose the most aggressive move.
+    Heuristic calculates number of players move vs 3.5 of value of an opponent’s moves.
+    In the first half of the game heuristic will calculate number of players move vs 2 of value of an opponent’s moves.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    ----------
+    float
+    The heuristic value of the current game state to the specified player.
+    """
+    cells_left = game.width * game.height - game.move_count
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    if cells_left < int((game.width * game.height) / 2):
+        return float(own_moves - 3 * opp_moves)
+    return float(own_moves - 2 * opp_moves)
+
+
+def heuristic_3(game, player):
+    """ Best heuristic among 6 present.
+    Aggressive play in the first half of the game. Active player will try to choose the most aggressive move.
+    Heuristic calculates number of players move vs 3.5 of value of an opponent’s moves.
+    In the second half of the game heuristic will calculate number of players move vs number of an opponent’s moves.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    ----------
+    float
+    The heuristic value of the current game state to the specified player.
+    """
+    cells_left = game.width * game.height - game.move_count
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    if cells_left < int((game.width * game.height) / 2):
+        return float(own_moves - opp_moves)
+    return float(own_moves - 3 * opp_moves)
+
+
+def heuristic_4(game, player):
+    """Different level of aggressiveness on three different levels of game.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    ----------
+    float
+    The heuristic value of the current game state to the specified player.
+    """
+    board_size = game.width * game.height
+    cells_left = board_size - game.move_count
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    if cells_left < int((board_size) / 0.4):
+        return float(own_moves - opp_moves)
+    if cells_left < int((board_size) / 3):
+        return float(own_moves - 2 * opp_moves)
+    return float(own_moves - 3 * opp_moves)
+
+def heuristic_5(game, player):
+    """Similar to H5 but player instead plays less aggressive to the end of the game. (reversed order of aggressiveness)
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    ----------
+    float
+    The heuristic value of the current game state to the specified player.
+    """
+    board_size = game.width * game.height
+    cells_left = board_size - game.move_count
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    if cells_left < int((board_size) / 0.4):
+        return float(own_moves - 3 * opp_moves)
+    if cells_left < int((board_size) / 3):
+        return float(own_moves - 2 * opp_moves)
+    return float(own_moves - opp_moves)
+
+def heuristic_6(game, player):
+    """Similar to H3 but player instead plays less aggressive at the beginning of the game.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    ----------
+    float
+    The heuristic value of the current game state to the specified player.
+    """
+    board_size = game.width * game.height
+    cells_left = board_size - game.move_count
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    if cells_left < int((board_size) / 2):
+        return float(own_moves - opp_moves)
+    return float(own_moves - 2 * opp_moves)
+
+
+def h_num_moves(game, player):
+    """Calculate the number of blank cells for a game state given.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state.
+    """
+    return len(game.get_legal_moves(player))
+
+def h_mine_minus_his(game, player):
+    """Calculate the number of blank cells for a game state given.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state.
+    """
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves - opp_moves)
+
+def h_mine_minus_2his(game, player):
+    """Calculate the number of blank cells for a game state given.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state.
+    """
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves - 2 * opp_moves)
+
+def h_mine_minus_3his(game, player):
+    """Calculate the number of blank cells for a game state given.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    Returns
+    ----------
+    float
+        The heuristic value of the current game state.
+    """
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves - 3.5 * opp_moves)
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -115,7 +406,6 @@ class CustomPlayer:
 
         self.time_left = time_left
 
-        # TODO: finish this function!
 
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
@@ -126,14 +416,35 @@ class CustomPlayer:
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-            pass
 
+            max_cell = [float('-inf'), (-1, -1)]  # to track max [score,move]
+            if self.method == 'minimax':
+                if self.iterative:
+                    for depth in range(0, 99):
+                        for move in legal_moves:
+                            val, _ = self.minimax(game.forecast_move(move), depth, maximizing_player=False)
+                            if val > max_cell[0]:
+                                max_cell = [val, move]
+                else:
+                    for move in legal_moves:
+                        val, _ = self.minimax(game.forecast_move(move), self.search_depth, maximizing_player=False)
+                        if val > max_cell[0]:
+                            max_cell = [val, move]
+            else:
+                if self.iterative:
+                    for depth in range(0, 99):
+                        for move in legal_moves:
+                            val, _ = self.alphabeta(game.forecast_move(move), depth, maximizing_player=False)
+                            if val > max_cell[0]:
+                                max_cell = [val, move]
+                else:
+                    for move in legal_moves:
+                        val, _ = self.alphabeta(game.forecast_move(move), self.search_depth, maximizing_player=False)
+                        if val > max_cell[0]:
+                            max_cell = [val, move]
+            return max_cell[1]
         except Timeout:
-            # Handle any actions required at timeout, if necessary
-            pass
-
-        # Return the best move from the last completed search iteration
-        raise NotImplementedError
+            return max_cell[1]
 
     def minimax(self, game, depth, maximizing_player=True):
         """Implement the minimax search algorithm as described in the lectures.
@@ -163,8 +474,25 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        moves_available = game.get_legal_moves()  # get list of legal moves for the current player
+
+        if depth == 0 or not moves_available:
+            return self.score(game,self), (-1,-1)
+
+        if maximizing_player:
+            max_cell = [float('-inf'), (-1, -1)]  # to track max [score,move]
+            for move in moves_available:
+                val, _ = self.minimax(game.forecast_move(move), depth-1, maximizing_player=False)
+                if val > max_cell[0]:
+                    max_cell = [val, move]
+            return max_cell[0],max_cell[1]
+        else:
+            min_cell = [float('inf'), (-1, -1)]  # to track min [score,move]
+            for move in moves_available:
+                val, _ = self.minimax(game.forecast_move(move), depth-1, maximizing_player=True)
+                if val < min_cell[0]:
+                    min_cell = [val, move]
+            return min_cell[0],min_cell[1]
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
@@ -201,5 +529,29 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        moves_available = game.get_legal_moves()  # get list of legal moves for the current player
+
+        if depth == 0 or not moves_available:
+            return self.score(game,self), (-1,-1)
+
+        if maximizing_player:
+            max_cell = [float('-inf'), (-1, -1)]  # to track max [score,move]
+            for move in moves_available:
+                val, _ = self.alphabeta(game.forecast_move(move), depth-1, alpha, beta, maximizing_player=False)
+                if val >= beta:
+                    return val, move
+                if val > alpha:
+                    alpha = val
+                    max_cell = [val, move]
+            return max_cell[0],max_cell[1]
+        else:
+            min_cell = [float('inf'), (-1, -1)]  # to track min [score,move]
+            for move in moves_available:
+                val, _ = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, maximizing_player=True)
+                if val <= alpha:
+                    return val, move
+                if val < beta:
+                    beta = val
+                    min_cell = [val, move]
+            return min_cell[0],min_cell[1]
+
