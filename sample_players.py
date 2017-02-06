@@ -11,7 +11,7 @@ def null_score(game, player):
 
     Parameters
     ----------
-    game : `isolation.Board`
+    game : `isolationzxl.Board`
         An instance of `isolation.Board` encoding the current state of the
         game (e.g., player locations and blocked cells).
 

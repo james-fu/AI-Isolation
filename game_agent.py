@@ -35,7 +35,8 @@ def custom_score(game, player):
     """
     return float(heuristic_3(game, player))
 
-def heuristic_1(game,player):
+
+def heuristic_1(game, player):
     """Aggressive play along the whole game. Active player will try to choose the most aggressive move.
     Heuristic calculates number of players move vs against 3.5 of value of an opponent’s moves.
 
@@ -64,7 +65,8 @@ def heuristic_1(game,player):
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(own_moves - 3.5 * opp_moves)
 
-def heuristic_2(game,player):
+
+def heuristic_2(game, player):
     """Aggressive play after the half of the game. Active player will try to choose the most aggressive move.
     Heuristic calculates number of players move vs 3.5 of value of an opponent’s moves.
     In the first half of the game heuristic will calculate number of players move vs 2 of value of an opponent’s moves.
@@ -172,6 +174,7 @@ def heuristic_4(game, player):
         return float(own_moves - 2 * opp_moves)
     return float(own_moves - 3 * opp_moves)
 
+
 def heuristic_5(game, player):
     """Similar to H5 but player instead plays less aggressive to the end of the game. (reversed order of aggressiveness)
 
@@ -206,6 +209,7 @@ def heuristic_5(game, player):
     if cells_left < int((board_size) / 3):
         return float(own_moves - 2 * opp_moves)
     return float(own_moves - opp_moves)
+
 
 def heuristic_6(game, player):
     """Similar to H3 but player instead plays less aggressive at the beginning of the game.
@@ -257,6 +261,7 @@ def h_num_moves(game, player):
     """
     return len(game.get_legal_moves(player))
 
+
 def h_mine_minus_his(game, player):
     """Calculate the number of blank cells for a game state given.
 
@@ -280,6 +285,7 @@ def h_mine_minus_his(game, player):
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(own_moves - opp_moves)
+
 
 def h_mine_minus_2his(game, player):
     """Calculate the number of blank cells for a game state given.
@@ -305,6 +311,7 @@ def h_mine_minus_2his(game, player):
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(own_moves - 2 * opp_moves)
 
+
 def h_mine_minus_3his(game, player):
     """Calculate the number of blank cells for a game state given.
 
@@ -328,6 +335,7 @@ def h_mine_minus_3his(game, player):
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(own_moves - 3.5 * opp_moves)
+
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -406,7 +414,6 @@ class CustomPlayer:
 
         self.time_left = time_left
 
-
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
         # immediately if there are no legal moves
@@ -477,22 +484,22 @@ class CustomPlayer:
         moves_available = game.get_legal_moves()  # get list of legal moves for the current player
 
         if depth == 0 or not moves_available:
-            return self.score(game,self), (-1,-1)
+            return self.score(game, self), (-1, -1)
 
         if maximizing_player:
             max_cell = [float('-inf'), (-1, -1)]  # to track max [score,move]
             for move in moves_available:
-                val, _ = self.minimax(game.forecast_move(move), depth-1, maximizing_player=False)
+                val, _ = self.minimax(game.forecast_move(move), depth - 1, maximizing_player=False)
                 if val > max_cell[0]:
                     max_cell = [val, move]
-            return max_cell[0],max_cell[1]
+            return max_cell[0], max_cell[1]
         else:
             min_cell = [float('inf'), (-1, -1)]  # to track min [score,move]
             for move in moves_available:
-                val, _ = self.minimax(game.forecast_move(move), depth-1, maximizing_player=True)
+                val, _ = self.minimax(game.forecast_move(move), depth - 1, maximizing_player=True)
                 if val < min_cell[0]:
                     min_cell = [val, move]
-            return min_cell[0],min_cell[1]
+            return min_cell[0], min_cell[1]
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
@@ -532,18 +539,18 @@ class CustomPlayer:
         moves_available = game.get_legal_moves()  # get list of legal moves for the current player
 
         if depth == 0 or not moves_available:
-            return self.score(game,self), (-1,-1)
+            return self.score(game, self), (-1, -1)
 
         if maximizing_player:
             max_cell = [float('-inf'), (-1, -1)]  # to track max [score,move]
             for move in moves_available:
-                val, _ = self.alphabeta(game.forecast_move(move), depth-1, alpha, beta, maximizing_player=False)
+                val, _ = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, maximizing_player=False)
                 if val >= beta:
                     return val, move
                 if val > alpha:
                     alpha = val
                     max_cell = [val, move]
-            return max_cell[0],max_cell[1]
+            return max_cell[0], max_cell[1]
         else:
             min_cell = [float('inf'), (-1, -1)]  # to track min [score,move]
             for move in moves_available:
@@ -553,5 +560,4 @@ class CustomPlayer:
                 if val < beta:
                     beta = val
                     min_cell = [val, move]
-            return min_cell[0],min_cell[1]
-
+            return min_cell[0], min_cell[1]
